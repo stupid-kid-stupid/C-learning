@@ -1,0 +1,249 @@
+引用
+//一个人有两个名，不管跟哪个名字的人说话，都是跟这个人说话。
+//引用经常用作函数的形参，表示形参和实参实际是同一个对象，在函数中对形参的修改也就是对实参的修改
+
+---
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+ 	double a = 3.14;
+ 	double& b = a;
+ 	b = 89;
+ 	a = 2;
+ 	cout << "a:" << a << endl;
+ 	cout << "b:" << b << endl;
+ 	cout << "&a:" << &a << endl;
+ 	cout << "&b:" << &b << endl;//输出b的地址，也就是a的地址，“&”是取地址操作符
+
+ 	return 0;
+}
+
+---
+
+//代码中 cout << "b:" << &b << endl; 里的 &b 是 “取 b 的地址”。
+//因为 b 是 a 的引用，b 和 a 共享同一内存地址，所以这里输出的 00000015E17DF9A8 其实是 a（也是 b）在内存中的地址值。
+//b:00000015E17DF9A8 是变量 a（和 b）的内存地址。
+
+运行结果：
+a:2
+b:2
+&a:000000997CCFF8D8
+&b:000000997CCFF8D8
+
+//==================================================================================
+//交换函数
+
+---
+
+#include <iostream>
+using namespace std;
+
+void swap(int x, int y)
+{
+ 	cout << "before the swap:" << x << "," << y << endl;
+ 	int t = x;
+ 	x = y;
+ 	y = t;
+ 	cout << "after the swap:" << x << "," << y << endl;
+}
+ 
+int main()
+{
+ 	int a = 3;
+ 	int b = 4;
+ 	cout << "a:" << a << endl;
+ 	cout << "b:" << b << endl;
+
+ 	swap(a, b);
+ 	cout << "after the function swap:" << a << "," << b << endl;
+
+ 	return 0;
+}
+
+---
+
+运行结果：
+a:3
+b:4
+before the swap:3,4
+after the swap:4,3
+after the function swap:3,4
+
+//！！！！！！！！！！！！！！！！！！！！！！！a,b没有交换
+
+//==================================================
+指针和取地址“&”
+
+---
+
+#include <iostream>
+using namespace std;
+
+void swap(int *x, int *y) //通过地址得到值
+{
+ 	cout << "before the swap:" << *x << "," << *y << endl;
+ 	int t = *x;
+ 	*x = *y;
+ 	*y = t;
+ 	cout << "after the swap:" << *x << "," << *y << endl;
+}
+ 
+int main()
+{
+ 	int a = 3;
+ 	int b = 4;
+ 	cout << "a:" << a << endl;
+ 	cout << "b:" << b << endl;
+
+ 	int *p = nullptr; //定义指针变量，p指向一个内存空间
+ 	p = &a;
+ 	cout << "p:" << p << endl;	//地址
+ 	cout << "&a:" << &a << endl;
+ 	cout << "*p:" << *p << endl;//地址对应的内容
+
+ 	*p = 5;
+ 	cout << "a:" << a << endl;
+
+ 	swap(&a, &b); //&a，&b为a，b的地址，把a,b地址传给x,y
+
+ 	cout << "after the function swap:" << a << "," << b << endl;
+
+ 	return 0;
+}
+
+---
+
+运行结果：
+a:3
+b:4
+p:0000000CA610FC24
+&a:0000000CA610FC24
+*p:3
+a:5
+before the swap:5,4
+after the swap:4,5
+after the function swap:4,5
+
+//！！！！！！！！！！！！！！！！！！！！！！！a,b交换
+
+//==================================================
+引用与函数
+---
+
+#include <iostream>
+using namespace std;
+
+void swap(int &x, int &y) //int &x = a; int &y = b;
+{
+ 	cout << "before the swap:" << x << "," << y << endl;
+ 	int t = x;
+ 	x = y;
+ 	y = t;
+ 	cout << "after the swap:" << x << "," << y << endl;
+
+}
+ 
+int main()
+{
+ 	int a = 3;
+ 	int b = 4;
+ 	cout << "a:" << a << endl;
+ 	cout << "b:" << b << endl;
+
+ 	swap(a, b); //x,y分别是a,b的引用, x,y变 -> a,b变
+ 	cout << "after the function swap:" << a << "," << b << endl;
+
+ 	return 0;
+}
+
+---
+
+运行结果：
+a:3
+b:4
+before the swap:3,4
+after the swap:4,3
+after the function swap:4,3
+
+//！！！！！！！！！！！！！！！！！！！！！！！a,b交换
+const修改符
+//当实参占据内存过大，用引用代替传值（需要复制）可提高效率。
+如果不希望因此无意中修改实参，可以用const
+不能给常量“y”赋值
+
+#include <iostream>
+using namespace std;
+
+void change(double &x, const double &y, double &z) 
+{
+	x = 100;
+	y = 200;
+	z = 300;
+
+}
+ 
+int main()
+{
+	double a = 0;
+	double b = 0;
+	double c = 0;
+
+	change(a, b, c);
+
+	cout << "after the function change:" << a << "," << b << "," << c << endl;
+
+	return 0;
+}
+
+运行结果：错误！不能给常量“y”赋值。
+
+2. 普通引用不能引用常量
+
+#include <iostream>
+using namespace std;
+
+void change(double &x, double &y, double &z) 
+{
+	x = 100;
+	y = 200;
+	z = 300;
+
+}
+ 
+int main()
+{
+	double a = 0;
+	const double b = 0;
+	double c = 0;
+
+	change(a, b, c);
+
+	cout << "after the function change:" << a << "," << b << "," << c << endl;
+
+	return 0;
+}
+
+
+运行结果：错误！
+const double ->const double 不能对常量进行修改
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

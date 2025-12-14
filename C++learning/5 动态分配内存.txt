@@ -1,0 +1,83 @@
+动态分配内存：main程序结束时会自动释放函数
+//C语言用malloc和free
+//new和delete：new-分配内存，delete-释放内存
+//定义一个指针
+//首地址 = new 内存块大小  
+//delete 首地址 or delete[] 首地址
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+using namespace std;
+
+ 
+int main()
+{
+	double d = 3.14;
+	double* dp;
+	dp = &d;	//把d的地址存到dp
+	
+	*dp = 4.14;
+	cout << "*dp = " << *dp << "d = " << d << endl;
+	cin >> *dp;
+	cout << "*dp = " << *dp << "d = " << d << endl;
+
+	dp = new double;	//new - 分配一块刚好容纳double值的内存块
+						//并返回这个内存块的地址，而且地址的类型是double*
+						//这个地址被保存在dp中，dp指向这个新内存块，不再是原来
+						//但目前这个内存块的值是未知的
+
+	*dp = 45.3;
+	cout << "type a number:";
+	cin >> *dp;
+	cout << "*dp = " << *dp << endl;
+
+	*dp = *dp + 5;
+	cout << "*dp = " << *dp << endl;
+
+	delete dp;
+
+	dp = new double[5];
+
+	dp[0] = 4456;
+	dp[1] = dp[0] + 567;
+
+	cout << "dp[0]= " << dp[0] << "dp[1] " << dp[1] << endl;
+
+	delete[] dp;
+
+	int n = 8;
+	dp = new double[n];
+	for (int i = 0; i < n; i++) 
+	{
+		dp[i] = i;
+	}
+
+	double *p = dp;
+	for (int i = 0; i < n; i++)
+	{
+		cout << *(p + i) << endl;
+	}
+
+	cout << endl;
+
+	for (double *p = dp, *q = dp + n;  p < q; p++)
+	{
+		cout << *p << endl;
+	}
+
+	cout << endl;
+
+	delete[] dp;
+
+	char* s;
+	s = new char[100];
+	strcpy(s, "hello!");
+	cout << s << endl;
+	delete[] s;
+
+
+	return 0;
+}
+

@@ -1,0 +1,43 @@
+类的定义
+
+#include <iostream>
+using namespace std;
+
+struct Data 
+{
+	int d, m, y;
+	
+	void init(int dd, int mm, int yy) 
+	{
+		d = dd; 
+		m = mm;
+		y = yy;
+	}
+
+	void print()
+	{
+		cout << y << "-" << m << "-" << d << endl;
+	}
+
+};
+ 
+int main()
+{
+	Data data;	
+	data.print();			//输出随意值
+	data.init(2, 3, 2008);
+	data.print();
+	
+	data.y = 2025;
+	data.print();
+
+	cout << data.d << endl;
+	return 0;
+}
+
+运行结果：
+-858993460--858993460--858993460
+2008-3-2
+2025-3-2
+2
+

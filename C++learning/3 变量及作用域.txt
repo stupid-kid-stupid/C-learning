@@ -1,0 +1,22 @@
+//变量及作用域
+#include <iostream>
+using namespace std;
+
+int main()
+{
+ 	double a;
+ 	cout << "number:";
+ 	cin >> a;
+ 	{
+ 		int a = 1;   //int a隐藏作用域外的double a
+ 		a = a * 10 + 4;
+ 		cout << "int a:" << a << endl;
+ 	}
+ 	cout << "double a:" << a << endl;
+ 	return 0;
+}
+
+运行结果：
+number:34
+int a:14
+double a:34

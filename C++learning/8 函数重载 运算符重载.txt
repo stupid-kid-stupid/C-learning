@@ -1,0 +1,118 @@
+函数重载 运算符重载
+
+！！！函数重载：C++允许函数同名 只要它们的形参不一样（个数或对应参数类型），
+调用函数时将实参和形参的匹配选择最佳函数，
+如果有多个难以区分的最佳函数，则变化一起报错！
+注意！不能根据返回类型区分同名函数
+
+#include <iostream>
+using namespace std;
+
+double add(double a, double b)
+{
+	return a + b;
+}
+
+int add(int a, int b)
+{
+	return a + b;
+}
+
+void add(int a, int b)
+{
+	return a - b;
+}
+
+
+√ C++调用时根据参数的类型来判断调用哪个函数
+such as 
+add（1,2）；//调用int add(int a, int b) 
+add（1.1, 2.1）;	//调用double add(double a, double b)
+
+× 编译器无法区分 int add(int a, int b)
+		void add(int a, int b)
+！！！C++ 认为两个函数时一样的
+
+
+
+！！！！！！运算符重载
+#include <iostream>
+using namespace std;
+
+struct Vector2
+{
+	double x;
+	double y;
+};
+
+Vector2 operator * (double a, Vector2 b)
+{
+	Vector2 r;
+	r.x = a * b.x;
+	r.y = a * b.y;
+
+	return r;
+}
+
+Vector2 operator + (Vector2 a, Vector2 b)
+{
+	Vector2 r;
+	r.x = a.x + b.y;
+	r.y = a.y + b.y;
+
+	return r;
+}
+
+int main()
+{
+	Vector2 k, m;
+
+	k.x = 2;
+	k.y = 1;
+
+	m = 3.14 * k;
+
+	cout << m.x << endl;
+
+	Vector2 n = m + k;
+	cout << n.x << endl;
+
+	return 0;
+}
+
+运行结果：
+6.28
+7.28
+
+！！！去掉Vector2定义符号后，程序无法运行
+
+
+#include <iostream>
+using namespace std;
+
+struct vertor
+{
+	double x;
+	double y;
+};
+
+ostream& operator << (ostream& o, vertor a) //ostream& 是对输出流对象的引用
+{
+	o << "(" << a.x << "," << a.y << ")";
+	return o;
+}
+
+int main()
+{
+	vertor k;
+
+	k.x = 2;
+	k.y = 1;
+
+	cout << k << endl;
+
+	return 0;
+}
+
+运行结果：(2,1)
+
