@@ -1,0 +1,187 @@
+构造函数
+//如果没有构造函数，编译器会自动生成构造函数
+类名()
+{
+
+}
+
+#include <iostream>
+using namespace std;
+
+
+struct Data 
+{
+	int d, m, y;
+	
+	Data()
+	{
+		d = 1; m = 1; y = 2000;
+		cout << "default constructor！" << endl;
+	}
+
+	Data(int dd)
+	{
+		d = dd; m = 1; y = 2000;
+		cout << "default constructor！" << endl;
+	}
+
+	Data(int dd, int mm)
+	{
+		d = dd; m = mm; y = 2000;
+		cout << "default constructor！" << endl;
+	}
+
+	//构造函数：名字与类的名字一样，定义Data data(2, 3, 2008);时会调用该函数
+	Data(int dd, int mm, int yy) 
+	{
+		d = dd; 
+		m = mm;
+		y = yy;
+		cout << "constructor！" << endl;
+	}
+
+	void print()
+	{
+		cout << y << "-" << m << "-" << d << endl;
+	}
+
+};
+ 
+int main()
+{
+	//定义Data的别名不能同名
+	Data day1;
+	Data day2(2);
+	Data day3(2, 3);
+	Data data(2, 3, 2008);
+	data.print();
+	day1.print();
+	day2.print();
+	day3.print();
+	
+	return 0;
+}
+
+运行结果：
+default constructor！
+default constructor！
+default constructor！
+constructor！
+2008-3-2
+2000-1-1
+2000-1-2
+2000-3-2
+
+
+！！！！！！！！！！对构造函数进行修改，加上默认值
+
+#include <iostream>
+using namespace std;
+
+
+struct Data 
+{
+	int d, m, y;
+
+	//构造函数：名字与类的名字一样，定义Data data(2, 3, 2008);时会调用该函数
+	Data(int dd = 1 , int mm = 1, int yy = 2000) 
+	{
+		d = dd; 
+		m = mm;
+		y = yy;
+		cout << "constructor！" << endl;
+	}
+
+	void print()
+	{
+		cout << y << "-" << m << "-" << d << endl;
+	}
+
+};
+ 
+int main()
+{
+	Data day1;
+	Data day2(2);
+	Data day3(2, 3);
+	Data data(2, 3, 2008);
+	data.print();
+	day1.print();
+	day2.print();
+	day3.print();
+	
+	return 0;
+}
+
+运行结果：
+constructor！
+constructor！
+constructor！
+constructor！
+2008-3-2
+2000-1-1
+2000-1-2
+2000-3-2
+
+
+
+//析构函数
+~ 类名()
+{
+
+}
+
+程序结束自动运行
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
+
+struct student 
+{
+	char* name;
+	int age;
+	student(const char* n = "no_name", int a = 15)
+	{
+		int len = strlen(n);
+		name = new char[len + 1];
+		strcpy(name, n);
+		age = a;
+		std::cout << "construtor of" << name << std::endl;
+	}
+
+	virtual ~student()
+	{
+		std::cout << "destrutor!" << name << std::endl;
+		delete[] name;	//防止内存泄漏
+	}
+};
+
+void f()
+{
+	student stu1;
+	student stu2("wang");
+	student stu3("li", 21);
+	std::cout << stu1.name << "\t" << stu1.age << std::endl;
+	std::cout << stu2.name << "\t" << stu2.age << std::endl;
+	std::cout << stu3.name << "\t" << stu3.age << std::endl;
+}
+
+
+int main()
+{
+	f();
+
+	return 0;
+}
+
+运行结果：
+construtor ofno_name
+construtor ofwang
+construtor ofli
+no_name 15
+wang    15
+li      21
+destrutor!li
+destrutor!wang
+destrutor!no_name
